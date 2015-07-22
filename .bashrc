@@ -1,6 +1,10 @@
-export WORKON_HOME=~/.virtualenvs
-source /usr/bin/virtualenvwrapper.sh
+#export WORKON_HOME=~/.virtualenvs
+#source /usr/bin/virtualenvwrapper.sh
 export LS_OPTIONS='--color=auto'
+
+#source /usr/local/etc/bash_completion.d/git-prompt.sh 
+#source /usr/local/etc/bash_completion.d/git-completion.bash 
+
 # /etc/bash.bashrc
 #
 # https://wiki.archlinux.org/index.php/Color_Bash_Prompt
@@ -39,6 +43,45 @@ export LS_OPTIONS='--color=auto'
 # first to take advantage of user additions. Use internal bash
 # globbing instead of external grep binary.
 
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWSTASHSTATE=1
+export GIT_PS1_SHOWUNTRACKEDFILES=1
+export GIT_PS1_SHOWUPSTREAM="auto git"
+export GIT_PS1_DESCRIBE_STYLE="branch"
+export GIT_PS1_SHOWCOLORHINTS=1
+
+set_prompt () {
+    lastcmd=$?
+    Blue='\[\033[01;34m\]'
+    White='\[\033[01;37m\]'
+    Red='\[\033[01;31m\]'
+    Green='\[\033[01;32m\]'
+    Yellow='\[\033[01;33m\]'
+    Reset='\[\033[00m\]'
+    FancyX='\342\234\227'
+    Checkmark='\342\234\223'
+
+    if [[ ${EUID} == 0 ]]; then
+        PS1="\u$Green\h"; 
+    else 
+        PS1="\u$Green@\h";
+    fi
+
+    if [ -z "${gitps1}" ]; then
+        PS1+=" $Yellow\w ";
+    else
+        PS1+=" $Yellow\w [$(__git_ps1) ] ";
+    fi
+    
+    if [[ $lstcmd == 0 ]]; then
+        PS1+="$Green$Checkmark "
+    else
+        PS1+="$Red$FancyX "
+    fi
+
+    PS1+="$Blue \\$$Reset"
+}
+
 # sanitize TERM:
 safe_term=${TERM//[^[:alnum:]]/?}
 match_lhs=""
@@ -62,7 +105,9 @@ if [[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] ; then
 		fi
 	fi
 
-	PS1="$(if [[ ${EUID} == 0 ]]; then echo '\[\033[01;31m\]\h'; else echo '\[\033[01;32m\]@\h'; fi)\[\033[01;37m\] \w \$([[ \$? != 0 ]] && echo \"\[\033[01;31m\]:(\[\033[01;37m\] \")\\$\[\033[00m\] "
+    
+    PROMPT_COMMAND='set_prompt'
+	#PS1="$(if [[ ${EUID} == 0 ]]; then echo '\[\033[01;31m\]\h'; else echo '\[\033[01;32m\]@\h'; fi)\[\033[01;37m\] \w \$([[ \$? != 0 ]] && echo \"\[\033[01;31m\]:(\[\033[01;37m\] \")\\$\[\033[00m\] "
 
 	# Use this other PS1 string if you want \W for root and \w for all other users:
 	# PS1="$(if [[ ${EUID} == 0 ]]; then echo '\[\033[01;31m\]\h\[\033[01;34m\] \W'; else echo '\[\033[01;32m\]\u@\h\[\033[01;34m\] \w'; fi) \$([[ \$? != 0 ]] && echo \"\[\033[01;31m\]:(\[\033[01;34m\] \")\\$\[\033[00m\] "
