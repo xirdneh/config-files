@@ -2,8 +2,12 @@
 #source /usr/bin/virtualenvwrapper.sh
 export LS_OPTIONS='--color=auto'
 
+## uncomment this to use __git_ps1 in OSX
 #source /usr/local/etc/bash_completion.d/git-prompt.sh 
 #source /usr/local/etc/bash_completion.d/git-completion.bash 
+## uncomment this to use __git_ps1 in linux
+#source /usr/share/git/completion/git-prompt.sh 
+#source /usr/share/git/completion/git-completion.bash 
 
 # /etc/bash.bashrc
 #
@@ -60,6 +64,7 @@ set_prompt () {
     Reset='\[\033[00m\]'
     FancyX='\342\234\227'
     Checkmark='\342\234\223'
+    gitps1=`__git_ps1`
 
     if [[ ${EUID} == 0 ]]; then
         PS1="\u$Green\h"; 
@@ -107,6 +112,7 @@ if [[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] ; then
 
     
     PROMPT_COMMAND='set_prompt'
+
 	#PS1="$(if [[ ${EUID} == 0 ]]; then echo '\[\033[01;31m\]\h'; else echo '\[\033[01;32m\]@\h'; fi)\[\033[01;37m\] \w \$([[ \$? != 0 ]] && echo \"\[\033[01;31m\]:(\[\033[01;37m\] \")\\$\[\033[00m\] "
 
 	# Use this other PS1 string if you want \W for root and \w for all other users:
@@ -139,9 +145,9 @@ PS4="+ "
 # Try to keep environment pollution down, EPA loves us.
 unset safe_term match_lhs
 
-# Try to enable the auto-completion (type: "pacman -S bash-completion" to install it).
+# Try to enable the auto-completion (type: "pacman -S bash-completion" to install it). **** ONLY FOR ARCH ****
 [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 
-# Try to enable the "Command not found" hook ("pacman -S pkgfile" to install it).
+# Try to enable the "Command not found" hook ("pacman -S pkgfile" to install it).  **** ONLY FOR ARCH *****
 # See also: https://wiki.archlinux.org/index.php/Bash#The_.22command_not_found.22_hook
 [ -r /usr/share/doc/pkgfile/command-not-found.bash ] && . /usr/share/doc/pkgfile/command-not-found.bash
