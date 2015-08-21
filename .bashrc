@@ -56,11 +56,23 @@ export GIT_PS1_SHOWCOLORHINTS=1
 
 set_prompt () {
     lastcmd=$?
-    Blue='\[\033[01;34m\]'
+
+    ## REGULAR COLORS
+    # Blue='\[\033[01;34m\]'
+    # White='\[\033[01;37m\]'
+    # Red='\[\033[01;31m\]'
+    # Green='\[\033[01;32m\]'
+    # Yellow='\[\033[01;33m\]'
+
+    ## 256 less intense colors.
+    Blue='\[\033[38;5;27m\]'
     White='\[\033[01;37m\]'
-    Red='\[\033[01;31m\]'
-    Green='\[\033[01;32m\]'
-    Yellow='\[\033[01;33m\]'
+    Red='\[\033[38;5;160m\]'
+    RedBold='\[\033[1;38;5;160m\]'
+    Green='\[\033[38;5;28m\]'
+    GreenBold='\[\033[1;38;5;28m\]'
+    Yellow='\[\033[38;5;214m\]'
+
     Reset='\[\033[00m\]'
     FancyX='\342\234\227'
     Checkmark='\342\234\223'
@@ -78,7 +90,7 @@ set_prompt () {
         PS1+=" $Yellow\w [$(__git_ps1) ] ";
     fi
     
-    if [[ $lstcmd == 0 ]]; then
+    if [[ $lastcmd == 0 ]]; then
         PS1+="$Green$Checkmark "
     else
         PS1+="$Red$FancyX "
