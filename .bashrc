@@ -72,13 +72,14 @@ set_prompt () {
     Green='\[\033[38;5;28m\]'
     GreenBold='\[\033[1;38;5;28m\]'
     Yellow='\[\033[38;5;214m\]'
+    Orange='\[\033[38;5;202m\]'
 
     Reset='\[\033[00m\]'
     FancyX='\342\234\227'
     Checkmark='\342\234\223'
     gitps1=`__git_ps1`
 
-    PS1="\u";
+    PS1="$Orange\u$Reset";
     #Checking for VIM
     if [ -z $VIM ]; then
         PS1+=""; 
