@@ -50,7 +50,7 @@ source /usr/local/etc/bash_completion.d/git-completion.bash
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWSTASHSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
-export GIT_PS1_SHOWUPSTREAM="auto git"
+export GIT_PS1_SHOWUPSTREAM="auto verbose git"
 export GIT_PS1_DESCRIBE_STYLE="branch"
 export GIT_PS1_SHOWCOLORHINTS=1
 
@@ -95,7 +95,7 @@ set_prompt () {
     if [ -z "${gitps1}" ]; then
         PS1+=" $Yellow\w ";
     else
-        PS1+=" $Yellow\w [$Reset$(__git_ps1)$Yellow] ";
+        PS1+=" $Yellow\w$Reset$gitps1 ";
     fi
     
     if [[ $lastcmd == 0 ]]; then
