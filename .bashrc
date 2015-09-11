@@ -3,8 +3,8 @@
 export LS_OPTIONS='--color=auto'
 
 ## uncomment this to use __git_ps1 in OSX
-#source /usr/local/etc/bash_completion.d/git-prompt.sh 
-#source /usr/local/etc/bash_completion.d/git-completion.bash 
+source /usr/local/etc/bash_completion.d/git-prompt.sh 
+source /usr/local/etc/bash_completion.d/git-completion.bash 
 ## uncomment this to use __git_ps1 in linux
 #source /usr/share/git/completion/git-prompt.sh 
 #source /usr/share/git/completion/git-completion.bash 
@@ -78,16 +78,24 @@ set_prompt () {
     Checkmark='\342\234\223'
     gitps1=`__git_ps1`
 
+    PS1="\u";
+    #Checking for VIM
+    if [ -z $VIM ]; then
+        PS1+=""; 
+    else
+        PS1+="$Red[v]$Reset"
+    fi
+    #Checking if root
     if [[ ${EUID} == 0 ]]; then
-        PS1="\u$Green\h"; 
+        PS1+="$Green\h"
     else 
-        PS1="\u$Green@\h";
+        PS1+="$Green@\h";
     fi
 
     if [ -z "${gitps1}" ]; then
         PS1+=" $Yellow\w ";
     else
-        PS1+=" $Yellow\w [$(__git_ps1) ] ";
+        PS1+=" $Yellow\w [$Reset$(__git_ps1)$Yellow] ";
     fi
     
     if [[ $lastcmd == 0 ]]; then
@@ -96,7 +104,7 @@ set_prompt () {
         PS1+="$Red$FancyX "
     fi
 
-    PS1+="$Blue \\$$Reset"
+    PS1+="$Blue \\$ $Reset"
 }
 
 # sanitize TERM:
