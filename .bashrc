@@ -78,6 +78,23 @@ set_prompt () {
     FancyX='\342\234\227'
     Checkmark='\342\234\223'
     gitps1=`__git_ps1`
+    
+    MPWD=`pwd`
+    THOME=${HOME//\//\\\/}
+    REPWD=${MPWD/#$THOME/\~}
+    OIFS=$IFS
+    IFS="/"
+    read -a PARR <<< "$REPWD";
+    
+    IFS=$OIFS
+    RPWD=""
+    if [ "${#PARR[@]}" -gt 5 ]; 
+    then
+        PLEN="${#PARR[@]}"
+        RPWD="${PARR[0]}/${PARR[1]}/[...]/${PARR[$(expr $PLEN - 2)]}/${PARR[$(expr $PLEN - 1)]}"
+    else
+        RPWD=$REPWD
+    fi
 
     PS1="$Orange\u$Reset";
     #Checking for VIM
@@ -94,9 +111,9 @@ set_prompt () {
     fi
 
     if [ -z "${gitps1}" ]; then
-        PS1+=" $Yellow\w ";
+        PS1+=" $Yellow$RPWD ";
     else
-        PS1+=" $Yellow\w$Reset$gitps1 ";
+        PS1+=" $Yellow$RPWD$Reset$gitps1 ";
     fi
     
     if [[ $lastcmd == 0 ]]; then
