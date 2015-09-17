@@ -3,11 +3,11 @@
 export LS_OPTIONS='--color=auto'
 
 ## uncomment this to use __git_ps1 in OSX
-source /usr/local/etc/bash_completion.d/git-prompt.sh 
-source /usr/local/etc/bash_completion.d/git-completion.bash 
+#source /usr/local/etc/bash_completion.d/git-prompt.sh 
+#source /usr/local/etc/bash_completion.d/git-completion.bash 
 ## uncomment this to use __git_ps1 in linux
-#source /usr/share/git/completion/git-prompt.sh 
-#source /usr/share/git/completion/git-completion.bash 
+source /usr/share/git/completion/git-prompt.sh 
+source /usr/share/git/completion/git-completion.bash 
 
 # /etc/bash.bashrc
 #
