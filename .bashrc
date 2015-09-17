@@ -1,13 +1,16 @@
 #export WORKON_HOME=~/.virtualenvs
 #source /usr/bin/virtualenvwrapper.sh
-export LS_OPTIONS='--color=auto'
+if [[ $OSTYPE == "linux-gnu" ]]; then
+    export LS_OPTIONS='--color=auto'
+fi
 
-## uncomment this to use __git_ps1 in OSX
-#source /usr/local/etc/bash_completion.d/git-prompt.sh 
-#source /usr/local/etc/bash_completion.d/git-completion.bash 
-## uncomment this to use __git_ps1 in linux
-source /usr/share/git/completion/git-prompt.sh 
-source /usr/share/git/completion/git-completion.bash 
+if [[ $OSTYPE == "linux-gnu" ]]; then
+    source /usr/share/git/completion/git-prompt.sh 
+    source /usr/share/git/completion/git-completion.bash 
+else
+    source /usr/local/etc/bash_completion.d/git-prompt.sh 
+    source /usr/local/etc/bash_completion.d/git-completion.bash 
+fi
 
 # /etc/bash.bashrc
 #
@@ -58,22 +61,24 @@ set_prompt () {
     lastcmd=$?
 
     ## REGULAR COLORS
-    # Blue='\[\033[01;34m\]'
-    # White='\[\033[01;37m\]'
-    # Red='\[\033[01;31m\]'
-    # Green='\[\033[01;32m\]'
-    # Yellow='\[\033[01;33m\]'
-
-    ## 256 less intense colors.
-    Blue='\[\033[38;5;27m\]'
-    White='\[\033[01;37m\]'
-    Red='\[\033[38;5;160m\]'
-    RedBold='\[\033[1;38;5;160m\]'
-    Green='\[\033[38;5;28m\]'
-    GreenBold='\[\033[1;38;5;28m\]'
-    Yellow='\[\033[38;5;214m\]'
-    Orange='\[\033[38;5;202m\]'
-
+    if [ $(tput colors) -ne "256" ]; then
+        Blue='\[\033[01;34m\]'
+        White='\[\033[01;37m\]'
+        Red='\[\033[01;31m\]'
+        Green='\[\033[01;32m\]'
+        Yellow='\[\033[01;33m\]'
+        Orange='\[\033[01;37m\]' #Which is actually gray, look away.
+    else
+        ## 256 less intense colors.
+        Blue='\[\033[38;5;27m\]'
+        White='\[\033[01;37m\]'
+        Red='\[\033[38;5;160m\]'
+        RedBold='\[\033[1;38;5;160m\]'
+        Green='\[\033[38;5;28m\]'
+        GreenBold='\[\033[1;38;5;28m\]'
+        Yellow='\[\033[38;5;214m\]'
+        Orange='\[\033[38;5;202m\]'
+    fi
     Reset='\[\033[00m\]'
     FancyX='\342\234\227'
     Checkmark='\342\234\223'
@@ -140,27 +145,27 @@ if [[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] ; then
 	# we have colors :-)
   
 	# Enable colors for ls, etc. Prefer ~/.dir_colors
-	if type -P dircolors >/dev/null ; then
-		if [[ -f ~/.dir_colors ]] ; then
-			eval $(dircolors -b ~/.dir_colors)
-		elif [[ -f /etc/DIR_COLORS ]] ; then
-			eval $(dircolors -b /etc/DIR_COLORS)
-		fi
-	fi
 
-    
+    if [[ $OSTYPE == "linux-gnu" ]]; then
+        if type -P dircolors >/dev/null ; then
+            if [[ -f ~/.dir_colors ]] ; then
+                eval $(dircolors -b ~/.dir_colors)
+            elif [[ -f /etc/DIR_COLORS ]] ; then
+                eval $(dircolors -b /etc/DIR_COLORS)
+            fi
+        fi
+    fi
+        
     PROMPT_COMMAND='set_prompt'
 
-	#PS1="$(if [[ ${EUID} == 0 ]]; then echo '\[\033[01;31m\]\h'; else echo '\[\033[01;32m\]@\h'; fi)\[\033[01;37m\] \w \$([[ \$? != 0 ]] && echo \"\[\033[01;31m\]:(\[\033[01;37m\] \")\\$\[\033[00m\] "
-
-	# Use this other PS1 string if you want \W for root and \w for all other users:
-	# PS1="$(if [[ ${EUID} == 0 ]]; then echo '\[\033[01;31m\]\h\[\033[01;34m\] \W'; else echo '\[\033[01;32m\]\u@\h\[\033[01;34m\] \w'; fi) \$([[ \$? != 0 ]] && echo \"\[\033[01;31m\]:(\[\033[01;34m\] \")\\$\[\033[00m\] "
-
-	alias ls="ls --color=auto"
-	alias dir="dir --color=auto"
-	alias grep="grep --color=auto"
-	alias dmesg='dmesg --color'
-
+    if [[ $OSTYPE == "linux-gnu" ]]; then
+        alias ls="ls --color=auto"
+        alias dir="dir --color=auto"
+        alias grep="grep --color=auto"
+        alias dmesg='dmesg --color'
+    else
+        alias ls="ls -FHG"
+    fi
 	# Uncomment the "Color" line in /etc/pacman.conf instead of uncommenting the following line...!
 
 	# alias pacman="pacman --color=auto"
@@ -171,14 +176,12 @@ else
 
 	PS1="\u@\h \w \$([[ \$? != 0 ]] && echo \":( \")\$ "
 
-	# Use this other PS1 string if you want \W for root and \w for all other users:
-	# PS1="\u@\h $(if [[ ${EUID} == 0 ]]; then echo '\W'; else echo '\w'; fi) \$([[ \$? != 0 ]] && echo \":( \")\$ "
-
 fi
 
 PS2="> "
 PS3="> "
 PS4="+ "
+
 
 # Try to keep environment pollution down, EPA loves us.
 unset safe_term match_lhs
