@@ -128,6 +128,16 @@ set_prompt () {
     fi
 
     PS1+="$Blue \\$ $Reset"
+
+## TO SET VIRTUALENV NAME
+    if [ -z "$VIRTUAL_ENV_DISABLE_PROMPT" ] ; then
+
+        if [ "$VIRTUAL_ENV" != "" ]; then
+
+            PS1="{`basename \"$VIRTUAL_ENV\"`}$PS1"
+        fi
+
+    fi 
 }
 
 # sanitize TERM:
