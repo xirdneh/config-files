@@ -47,3 +47,4 @@ let g:syntastic_javascript_checkers = ['jshint']
 nnoremap <Space>gd :YcmCompleter GoToDeclaration<CR>
 nnoremap <Space>gf :YcmCompleter GoToDefinition<CR>
 nnoremap <Space>go :YcmCompleter GoTo<CR>
+nnoremap <Space>sr :SyntasticReset<CR>

@@ -202,3 +202,15 @@ unset safe_term match_lhs
 # Try to enable the "Command not found" hook ("pacman -S pkgfile" to install it).  **** ONLY FOR ARCH *****
 # See also: https://wiki.archlinux.org/index.php/Bash#The_.22command_not_found.22_hook
 [ -r /usr/share/doc/pkgfile/command-not-found.bash ] && . /usr/share/doc/pkgfile/command-not-found.bash
+
+#Agave setup
+export PATH=$PATH:/Users/xirdneh/projects/agave/foundation-cli/bin
+export AGAVE_CACHE_DIR=$HOME/.agave/current
+alias agv-ds='ln -Ffhs $HOME/.agave/designsafe $HOME/.agave/current'
+alias agv-dsjs='ln -Ffhs $HOME/.agave/designsafe-jc $HOME/.agave/current'
+alias agv-dswma='ln -Ffhs $HOME/.agave/designsafe-wma_prtl $HOME/.agave/current'
+alias agv-dsenv='ln -Ffhs $HOME/.agave/designsafe-envision $HOME/.agave/current'
+alias agv-arp='ln -Ffhs $HOME/.agave/araport $HOME/.agave/current'
+alias agv-tacc='ln -Ffhs $HOME/.agave/tacc $HOME/.agave/current'
+alias agv-tacc-digrocks='ln -Ffhs $HOME/.agave/tacc-digrocks $HOME/.agave/current'
+alias agv-tacc-wma='ln -Ffhs $HOME/.agave/tacc-wma_prtl $HOME/.agave/current'
