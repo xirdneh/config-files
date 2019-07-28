@@ -176,6 +176,7 @@ if [[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] ; then
     else
         alias ls="ls -FHG"
     fi
+    alias setdock='eval "$(docker-machine env dev)"'
 	# Uncomment the "Color" line in /etc/pacman.conf instead of uncommenting the following line...!
 
 	# alias pacman="pacman --color=auto"
@@ -204,7 +205,7 @@ unset safe_term match_lhs
 [ -r /usr/share/doc/pkgfile/command-not-found.bash ] && . /usr/share/doc/pkgfile/command-not-found.bash
 
 #Agave setup
-export PATH=$PATH:/Users/xirdneh/projects/agave/foundation-cli/bin
+export PATH=$PATH:/Users/xirdneh/projects/agave/foundation-cli/bin:~/.npm-global/bin:/usr/local/opt/python/libexec/bin:/Users/xirdneh/Library/Python/3.7/bin:/Users/xirdneh/Library/Python/2.7/bin
 export AGAVE_CACHE_DIR=$HOME/.agave/current
 alias agv-ds='ln -Ffhs $HOME/.agave/designsafe $HOME/.agave/current'
 alias agv-dsjs='ln -Ffhs $HOME/.agave/designsafe-jc $HOME/.agave/current'
@@ -214,3 +215,54 @@ alias agv-arp='ln -Ffhs $HOME/.agave/araport $HOME/.agave/current'
 alias agv-tacc='ln -Ffhs $HOME/.agave/tacc $HOME/.agave/current'
 alias agv-tacc-digrocks='ln -Ffhs $HOME/.agave/tacc-digrocks $HOME/.agave/current'
 alias agv-tacc-wma='ln -Ffhs $HOME/.agave/tacc-wma_prtl $HOME/.agave/current'
+alias agv-portals-wma='ln -Ffhs $HOME/.agave/portals-wma_prtl $HOME/.agave/current'
+
+alias op-rel='curl https://opbeat.com/api/v1/organizations/<organization-id>/apps/<app-id>/releases/ \
+                -H "Authorization: Bearer <secret-token>" \
+                -d rev=`git log -n 1 --pretty=format:%H` \
+                -d branch=`git rev-parse --abbrev-ref HEAD` \
+                -d status=completed'
+
+alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
+
+alias ds-build-frontend='curl https://jenkins01.tacc.utexas.edu/job/DesignSafeCI_Portal_Frontend/build?token=2cc9d810-47c9-4aec-87f4-2f585778fab4'
+alias ds-build-portal='curl https://jenkins01.tacc.utexas.edu/job/DesignSafeCI_Portal/build?token=c3807270-e3e4-11e6-bf01-fe55135034f3'
+
+ds-dc-dev() {
+    docker-compose -f /Users/xirdneh/projects/designsafe/portal/conf/docker/docker-compose-dev.all.debug.yml "$@" | ~/projects/misc_scripts/awk/colorized/django/docker_django.sh 
+}
+
+cep-dc-dev() {
+    docker-compose -f /Users/xirdneh/projects/cep/server/conf/docker/docker-compose-dev.all.debug.yml "$@" | ~/projects/misc_scripts/awk/colorized/django/docker_django.sh 
+}
+
+#PYTHONPATH
+DS_TOKEN=c04fcdc18d7502ff52b6970c285773d
+JEKYLL_GITHUB_TOKEN=a852c61cc70520c9aa1bfc4dd591d8e2ef20f010
+
+branches-between-tags() {
+commits=($( git --no-pager log --format="%H" "$@" ))
+
+inbetween=()
+for commit in "${commits[@]}"
+do
+    contains=($( git --no-pager branch --contains "$commit" | grep -v '\* master'))
+    inbetween+=( "${contains[@]}" )
+done
+unique=($(for r in "${inbetween[@]}"; do echo "$r"; done | sort -du))
+
+for out in "${unique[@]}"
+do 
+    echo "$out"
+done
+}
+
+branch-in-tag() {
+commit=$(git show --format="%H" $1| head -n 1)
+tag=$(git tag --contains "$commit" | grep "$2")
+echo "$tag"
+}
+export GPG_TTY=$(tty)
+
+# added by travis gem
+[ -f /Users/xirdneh/.travis/travis.sh ] && source /Users/xirdneh/.travis/travis.sh
