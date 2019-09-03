@@ -11,6 +11,9 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'git://github.com/scrooloose/syntastic.git'
 Plugin 'git://github.com/Valloric/YouCompleteMe.git'
 Bundle 'Rykka/riv.vim'
+Plugin 'dpelle/vim-LanguageTool'
+Plugin 'git@github.com:tpope/vim-fugitive.git'
+Plugin 'Chiel92/vim-autoformat'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -44,14 +47,20 @@ set directory=~/.vim/swap
 set hls
 set ruler
 set laststatus=2
-set statusline+=(%n)\ %f\%=\%l,%c:%L\ (%b)\ %h%m%y%r
+set statusline+=(%n)\ %f\%=\%c,%l:%L\ (%b)\ %h%m%y%r
+set tw=120
+set fo+=t
+autocmd VimResized * wincmd =
 syntax on
 colorscheme distinguished
 
-let g:syntastic_python_checkers = ['pylint', 'flake8']
+let g:syntastic_python_checkers = ['pylint', 'flake8', 'pydocstyle']
 let g:syntastic_python_pylint_args = '--load-plugins pylint_django'
 let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_html_checkers = ['tidy']
+let t:syntastic_html_tidy_args = '--access=3'
 let g:syntastic_aggregate_errors = 1
+let g:languagetool_jar = '$HOME/.vim/language_tool/LanguageTool-4.1/languagetool-commandline.jar'
 
 let g:riv_python_rst_hl = 1
 
@@ -66,7 +75,7 @@ hi clear SpellBad
 hi clear SpellCap
 hi clear SpellLocal
 hi clear SpellRare
-hi SpellBad    cterm=underline  ctermfg=LightRed
-hi SpellCap    cterm=italic     ctermfg=LightYellow
-hi SpellLocal  cterm=underline  ctermfg=LightBlue
-hi SpellRare   cterm=underline  ctermfg=LightGray
+hi SpellBad    cterm=underline     ctermfg=LightMagenta
+hi SpellCap    cterm=underline     ctermfg=LightCyan
+hi SpellLocal  cterm=bold          ctermbg=Blue
+hi SpellRare   cterm=bold          ctermbg=Gray
