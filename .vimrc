@@ -79,3 +79,7 @@ hi SpellBad    cterm=underline     ctermfg=LightMagenta
 hi SpellCap    cterm=underline     ctermfg=LightCyan
 hi SpellLocal  cterm=bold          ctermbg=Blue
 hi SpellRare   cterm=bold          ctermbg=Gray
+
+" Autoformatters:
+"   python: autopep8, black
+"   javascript: prettier
