@@ -1,0 +1,54 @@
+[user]
+	email = jbc@rmcomplexity.com
+	name = Josue Balandrano Coronel
+[gpg]
+	program = gpg
+[commit]
+    gpgsign = true
+[alias]
+	amend = !"git commit --amend -C HEAD"
+	st = status
+	ci = commit
+    co = checkout
+    cb = checkout -tb
+	br = branch
+    l = log --graph --pretty=format:'%C(yellow)%h%Creset %m %C(bold yellow)%d%Creset %C(cyan)(%G?) %n%s%+b%n%Cgreen%cr %C(italic magenta)<%an>%Creset' --abbrev-commit --date=relative
+	sm = log --summary
+    po = push origin
+    pfo = push -f origin
+    fo = fork --remote-name origin
+    ppr = pull-request -e -c
+    prd = pull-request -e -c -d
+	
+	# hard reset
+	rshard = reset --hard HEAD
+
+	# undo last commit keeping files in stage
+	undolast = reset --soft HEAD^
+
+	untracked = ls-files . --exclude-standard --others
+	ignored = ls-files . --ignored --exclude-standard --others
+
+	# unstage file
+	unstage = reset HEAD
+
+	# unstage and remove local changes 
+	discard = checkout HEAD
+
+	# show git aliases
+	aliases = config --get-regexp alias
+
+	# list contributor stats for this repo
+	contributors = !git shortlog -n -s --no-merges $@ | cat - && echo && echo total $(git rev-list --count HEAD)
+
+	 # decorated graph view of one liner summarized commits from all branches. (inspired by git-extras)
+    tree = log --all --graph --decorate --oneline --simplify-by-decoration
+
+    # rebase
+    rb = rebase -S -i
+
+    # No pager commands
+    dl = --no-pager l
+[core]
+    editor = vim
+    excludesFile = /Users/jbalandranocoro/.git/.gitignore
