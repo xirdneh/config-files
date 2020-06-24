@@ -7,9 +7,11 @@ fi
 if [[ $OSTYPE == "linux-gnu" ]]; then
     source /usr/share/git/completion/git-prompt.sh 
     source /usr/share/git/completion/git-completion.bash 
+    source /usr/share/hub/comlpetion/hub.bash_completion.sh
 else
     source /usr/local/etc/bash_completion.d/git-prompt.sh 
     source /usr/local/etc/bash_completion.d/git-completion.bash 
+    source /usr/local/etc/bash_completion.d/hub.bash_completion.sh
 fi
 
 # /etc/bash.bashrc
@@ -203,3 +205,5 @@ unset safe_term match_lhs
 # Try to enable the "Command not found" hook ("pacman -S pkgfile" to install it).  **** ONLY FOR ARCH *****
 # See also: https://wiki.archlinux.org/index.php/Bash#The_.22command_not_found.22_hook
 [ -r /usr/share/doc/pkgfile/command-not-found.bash ] && . /usr/share/doc/pkgfile/command-not-found.bash
+
+alias git="hub"
